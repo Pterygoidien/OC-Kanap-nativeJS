@@ -5,17 +5,47 @@ const domTarget = "items";
 const generateProduct = product => {
   const card = document.createElement("a");
   card.href = `#`;
+
+  const article = document.createElement("article");
+  const image = document.createElement("img");
+  image.src = `image.png`;
+  image.alt = "alternative text";
+
+  const title = document.createElement("h3");
+  title.setAttribute("class", "productName");
+  title.innerHTML = "product__name";
+
+  const desc = document.createElement("p");
+  desc.setAttribute("class", "productDescription");
+  desc.innerHTML = "text";
+
+  /*article.appendChild(image);
+  article.appendChild(title);
+  article.appendChild(desc);*/
+
+  card.innerHTML = "card";
+  return card;
 };
 
-const domInjector = async () => {
+const domModifier = () => {
   const itemsContainer = document.getElementById(domTarget);
-
-  console.log(itemsContainer);
+  itemsContainer.innerHTML = "";
+  return itemsContainer;
 };
 
 window.onload = async () => {
   const products = await getProducts();
-  domInjector();
+  const itemsContainer = await domModifier();
+
+  await products.forEach(async product => {
+    const productArticle = generateProduct(product);
+    itemsContainer.appendChild(productArticle);
+  });
+
+  /*products
+    .map(generateProduct)
+    .forEach(product => itemsContainer.appendChild(product));
+  domInjector();*/
 };
 
 /*      <a href="./product.html?id=42">
