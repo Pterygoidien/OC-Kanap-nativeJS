@@ -7,6 +7,7 @@ const generateProduct = product => {
   card.href = `./product.html?id=${product["_id"]}`;
 
   const article = document.createElement("article");
+
   const image = document.createElement("img");
   image.src = `${product["imageUrl"]}`;
   image.alt = product.altTxt;
@@ -27,21 +28,9 @@ const generateProduct = product => {
   return card;
 };
 
-const domModifier = () => {
-  const itemsContainer = document.getElementById(domTarget);
-  itemsContainer.innerHTML = "";
-  return itemsContainer;
-};
-
 window.onload = async () => {
   const products = await getProducts();
-  const itemsContainer = domModifier();
-
-  /*await products.forEach(async product => {
-    const productArticle = generateProduct(product);
-    itemsContainer.appendChild(productArticle);
-  });*/
-
+  const itemsContainer = document.getElementById(domTarget);
   products
     .map(generateProduct)
     .forEach(product => itemsContainer.appendChild(product));

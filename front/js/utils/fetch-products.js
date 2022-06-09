@@ -6,14 +6,9 @@ const fetchParams = {
   keepalive: false,
 };
 
-export const getProducts = async () => {
-  const data = await fetch(`${API_HOST}`, fetchParams);
-  const res = await data.json();
-  return res;
-};
-
-export const getProductById = async productId => {
-  const data = await fetch(`${API_HOST}/${productId}`, fetchParams);
+export const getProducts = async productId => {
+  const fetchUrl = productId ? `${API_HOST}/${productId}` : API_HOST;
+  const data = await fetch(fetchUrl, fetchParams);
   const res = await data.json();
   return res;
 };
