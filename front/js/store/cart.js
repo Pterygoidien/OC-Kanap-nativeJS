@@ -33,5 +33,18 @@ export const getCart = async () => {
  */
 export const addProductToCart = productDto => {
   const { productId, color, quantity, name } = productDto;
-  const actualCart = getCart();
+  const cart = getCart();
+
+  //Verify if the item is already in the cart : if so, and the product is the same colour, simply adjust the quantity
+  const isProductAlreadyInCart = cart.findIndex(
+    product => product._id === productId && product.color === color
+  );
+  if (isProductAlreadyInCart > -1) {
+    cart[i].quantity += quantity;
+  } else {
+    cart.push(productDto);
+  }
+
+  setCart(cart);
+  return cart;
 };
