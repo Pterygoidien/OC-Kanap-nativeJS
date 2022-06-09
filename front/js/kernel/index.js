@@ -3,8 +3,9 @@ import { getProducts } from "../utils/fetch-products.js";
 const domTarget = "items";
 
 const generateProduct = product => {
+  console.log(product);
   const card = document.createElement("a");
-  card.href = `#`;
+  card.href = `./product.html?id=${product["_id"]}`;
 
   const article = document.createElement("article");
   const image = document.createElement("img");
@@ -19,11 +20,11 @@ const generateProduct = product => {
   desc.setAttribute("class", "productDescription");
   desc.innerHTML = "text";
 
-  /*article.appendChild(image);
+  article.appendChild(image);
   article.appendChild(title);
-  article.appendChild(desc);*/
+  article.appendChild(desc);
+  card.appendChild(article);
 
-  card.innerHTML = "card";
   return card;
 };
 
