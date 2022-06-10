@@ -46,7 +46,6 @@ export const addProductToCart = async productDto => {
   } else {
     cart.push(productDto);
   }
-  console.log(cart);
   setCart(cart);
   return cart;
 };
