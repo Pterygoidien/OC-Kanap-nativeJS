@@ -12,6 +12,7 @@ window.onload = async () => {
     setTotal(store);
   });
   formListener();
+
 };
 
 const displayItems = items => {
@@ -60,15 +61,31 @@ const formListener = () => {
   const cityErrorMsg = document.getElementById("cityErrorMsg"); //error message for the city
   const emailErrorMsg = document.getElementById("emailErrorMsg"); //error message for the email
 
+  const button = document.getElementById("order");
+  button.setAttribute('disabled', true)
+
   //add event listener for the form
   form.addEventListener("input", (event) => {
     event.preventDefault();
     //check if the form is valid
     if (validateForm()) {
-      console.log('hello')
+      button.removeAttribute('disabled')
     }
   });
 
+  form.addEventListener("submit", sendFormHandler);
+}
+
+const sendFormHandler = event => {
+  event.preventDefault();
+  const contact = {
+    firstName: firstName.value,
+    lastName: lastName.value,
+    address: address.value,
+    city: city.value,
+    email: email.value
+  }
+  console.log(contact)
 }
 const validateForm = () => {
   if (firstName.value.length < 2) {
@@ -96,7 +113,7 @@ const validateForm = () => {
   } else {
     cityErrorMsg.innerText = "";
   }
-  if (!email.value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)) {  //regex expression from https://www.w3resource.com/javascript/form/email-validation.php !!!
+  if (!email.value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)) {
     emailErrorMsg.innerText = "L'adresse email n'est pas valide";
     return false;
   } else {
@@ -104,12 +121,6 @@ const validateForm = () => {
   }
   return true;
 };
-
-
-
-
-
-
 
 const setTotal = cartItems => {
   let totalPrice = 0;

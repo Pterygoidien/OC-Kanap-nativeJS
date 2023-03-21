@@ -1,5 +1,5 @@
 export const itemLayout = (item, objectHandler) => {
-    const { _id, color, quantity, imageUrl, altTxt, price } = item;
+    const { _id, name, color, quantity, imageUrl, altTxt, price } = item;
     const { updateQuantityHandler, deleteItemHandler } = objectHandler;
     const cartItemContainer = document.getElementById("cart__items");
 
