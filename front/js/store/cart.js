@@ -14,7 +14,7 @@ export const setCart = async (cart = initialCart) =>
  * @returns {Cart}
  */
 
-export const getCart = async () =>
+export const getCart = () =>
   JSON.parse(localStorage.getItem("cart") || "[]");
 
 /**

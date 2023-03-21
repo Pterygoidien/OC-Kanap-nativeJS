@@ -1,65 +1,31 @@
 import { getCart } from "../store/cart.js";
 import { getProducts } from "../utils/fetch-products.js";
+import { getLocalStore, setLocalStore } from "../store/localStore.js";
 
 const cartItemContainer = document.getElementById("cart__items");
 
-const localStore = new Array();
 
-const getLocalStore = () => localStore;
+const initStore = async () => {
+  const cart = getCart();
+  const localStore = await setLocalStore(cart);
+  displayItems(localStore);
 
-const setLocalStore = async (cart, callback) => {
-  //make it on an external file for state managment
-  cart.forEach(item => {
-    try {
-      const productData = getProducts(item._id).then(data => data);
-    } catch (error) {}
+}
+initStore();
 
-    getProducts(item._id)
-      .then(productData => {
-        localStore.push({
-          _id: item._id,
-          color: item.color,
-          quantity: item.quantity,
-          name: productData.name,
-          price: productData.price,
-        });
-      })
-      .then(() => {
-        return callback();
-      });
+const deleteItemHandler = event => {
+  itemId = event.target.getAttribute("data-id");
+};
+
+const displayItems = items => {
+  items.forEach(item => {
+    itemLayout(item);
   });
-  return localStore;
-};
+}
 
-const deleteItem = event => {
-  //delete item from cart
-  /*const { id } = event.target;
-  const cart = getLocalStore();
-  const newCart = cart.filter(item => item._id !== id);
-  setLocalStore(newCart, () => {
-    cartItemContainer.innerHTML = "";
-    newCart.forEach(item => itemLayout(item));
-  }); */
-  console.log("delete called");
-};
-
-window.onload = async () => {
-  const cart = await getCart();
-  setLocalStore(cart, () => {});
-  cart.forEach(item => itemLayout(item));
-
-  const deleteButtons = document.getElementsByClassName("deleteItem");
-  deleteButtons.forEach(button => console.log(button));
-  for (let i = 0; i < deleteButtons.length; i++) {
-    console.log("delete button added");
-    deleteButtons[i].addEventListener("click", deleteItem);
-  } //add event listener to each delete button
-};
-
-const itemLayout = item => {
+const itemLayout = async item => {
   //create abstract functions to manipulate the DOM with setAttribute and a list for each element to create, iterate, then return result
   const { _id, color, quantity } = item;
-  console.log(item);
   getProducts(_id).then(data => {
     const cartItem = document.createElement("article");
     cartItem.className = "cart__item";
@@ -110,6 +76,8 @@ const itemLayout = item => {
     const deleteItem = document.createElement("p");
     deleteItem.className = "deleteItem";
     deleteItem.innerText = "Supprimer";
+    deleteItem.setAttribute("data-id", _id);
+    deleteItem.addEventListener("click", deleteItemHandler);
 
     cartItemContainer.appendChild(cartItem);
 
