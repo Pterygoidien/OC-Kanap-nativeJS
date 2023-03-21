@@ -58,11 +58,13 @@ export const addProductToCart = productDto => {
 export const removeProductFromCart = productId => {
   const cart = getCart();
   const productIndexInCart = cart.findIndex(
-    product => product.productId === productId
+    product => product._id === productId
   );
-  if (productIndexInCart > -1) cart.splice(i, 1);
-  //else throw new Error
+  if (productIndexInCart > -1) { cart.splice(productIndexInCart, 1); }
+  else {
+    console.log("Product not found in cart")
+  }
+  console.log(cart)
   setCart(cart);
-  console("removeProductFromCart called");
   return cart;
 };
