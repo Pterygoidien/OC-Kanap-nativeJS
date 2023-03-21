@@ -65,13 +65,13 @@ const formListener = () => {
     event.preventDefault();
     //check if the form is valid
     if (validateForm()) {
-      //if the form is valid, send the order to the server
-      sendOrder();
+      console.log('hello')
     }
   });
 
 }
 const validateForm = () => {
+
   if (firstName.value.length < 2) {
     firstNameErrorMsg.innerText = "Le prénom doit contenir au moins 2 caractères";
     return false;
