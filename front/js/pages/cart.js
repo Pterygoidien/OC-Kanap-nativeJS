@@ -3,8 +3,11 @@ import {
   initLocalStore,
   getLocalStore,
   updateQuantity,
+  emptyLocalStore,
 } from "../store/localStore.js";
 import { itemLayout } from "../utils/itemLayout.js";
+
+const cartItemContainer = document.getElementById("cart__items");
 
 window.onload = async () => {
   initLocalStore().then(store => {
@@ -18,7 +21,7 @@ window.onload = async () => {
 const displayItems = items => {
   if (items.length > 0) {
     items.forEach(item => {
-      itemLayout(item, { deleteItemHandler, updateQuantityHandler });
+      itemLayout(item, cartItemContainer, { deleteItemHandler, updateQuantityHandler });
     });
   } else {
     const emptyCart = document.createElement("p");
@@ -94,6 +97,7 @@ const sendFormHandler = event => {
   sendDataToServer(data)
     .then(order => {
       if (order.orderId !== undefined) {
+        emptyLocalStore();
         window.location.replace('./confirmation.html?orderId=' + order.orderId);
       }
 

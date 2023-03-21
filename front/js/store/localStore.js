@@ -50,3 +50,9 @@ export const updateQuantity = (id, quantity) => {
   setCart(localStore);
   return localStore;
 };
+
+export const emptyLocalStore = () => {
+  localStore.splice(0, localStore.length);
+  setCart(localStore);
+  return localStore;
+}

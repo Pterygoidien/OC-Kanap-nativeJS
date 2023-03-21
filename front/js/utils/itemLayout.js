@@ -1,7 +1,7 @@
-export const itemLayout = (item, objectHandler) => {
+export const itemLayout = (item, cartItemContainer, objectHandler) => {
     const { _id, name, color, quantity, imageUrl, altTxt, price } = item;
     const { updateQuantityHandler, deleteItemHandler } = objectHandler;
-    const cartItemContainer = document.getElementById("cart__items");
+
 
     const cartItem = document.createElement("article");
     cartItem.className = "cart__item";
