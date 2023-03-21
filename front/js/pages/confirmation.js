@@ -1,4 +1,4 @@
 console.log('hello');
 
 const urlParams = new URLSearchParams(window.location.search);
-console.log(urlParams);
+console.log(urlParams.firstName);
