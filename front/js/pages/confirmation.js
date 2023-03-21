@@ -24,15 +24,12 @@ window.onload = async () => {
     sendDataToServer(data)
         .then(order => {
             if (order.orderId !== undefined) {
-                spanOrderId = document.getElementById("orderId");
+                const spanOrderId = document.querySelector('#orderId');
             }
         })
         .catch(error => {
             console.log(error);
         })
-
-
-
 }
 
 const sendDataToServer = async (data) => {
