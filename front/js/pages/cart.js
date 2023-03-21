@@ -16,17 +16,18 @@ window.onload = async () => {
     setTotal(store);
   });
   formListener();
-
 };
 
 const displayItems = items => {
   if (items.length > 0) {
     items.forEach(item => {
-      itemLayout(item, cartItemContainer, { deleteItemHandler, updateQuantityHandler });
+      itemLayout(item, cartItemContainer, {
+        deleteItemHandler,
+        updateQuantityHandler,
+      });
     });
   } else {
     emptyCartDisplay();
-
   }
 };
 
@@ -56,14 +57,13 @@ const updateQuantityHandler = event => {
 
 const emptyCartDisplay = () => {
   const emptyCart = document.createElement("h2");
-  emptyCart.setAttribute('text-align', 'center');
+  emptyCart.setAttribute("text-align", "center");
   emptyCart.innerText = "Votre panier est vide";
   cartItemContainer.appendChild(emptyCart);
-  form.setAttribute('style', 'display: none');
-}
+  form.setAttribute("style", "display: none");
+};
 
 const formListener = () => {
-
   const firstName = document.getElementById("firstName");
   const lastName = document.getElementById("lastName");
   const address = document.getElementById("address");
@@ -76,19 +76,19 @@ const formListener = () => {
   const emailErrorMsg = document.getElementById("emailErrorMsg"); //error message for the email
 
   const button = document.getElementById("order");
-  button.setAttribute('disabled', true)
+  button.setAttribute("disabled", true);
 
   //add event listener for the form
-  form.addEventListener("input", (event) => {
+  form.addEventListener("input", event => {
     event.preventDefault();
     //check if the form is valid
     if (validateForm()) {
-      button.removeAttribute('disabled')
+      button.removeAttribute("disabled");
     }
   });
 
   form.addEventListener("submit", sendFormHandler);
-}
+};
 
 const sendFormHandler = event => {
   event.preventDefault();
@@ -97,59 +97,58 @@ const sendFormHandler = event => {
     lastName: lastName.value,
     address: address.value,
     city: city.value,
-    email: email.value
-  }
+    email: email.value,
+  };
   const products = new Array();
   const cartItems = getLocalStore();
   cartItems.forEach(item => {
     products.push(item._id);
   });
-  const data = { contact, products }
-  sendDataToServer(data)
-    .then(order => {
-      if (order.orderId !== undefined) {
-        emptyLocalStore();
-        window.location.replace('./confirmation.html?orderId=' + order.orderId);
-      }
-
-    })
-
-
-}
-const sendDataToServer = async (data) => {
+  const data = { contact, products };
+  sendDataToServer(data).then(order => {
+    if (order.orderId !== undefined) {
+      emptyLocalStore();
+      window.location.replace("./confirmation.html?orderId=" + order.orderId);
+    }
+  });
+};
+const sendDataToServer = async data => {
   const response = await fetch("http://localhost:3000/api/products/order", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   });
   const order = await response.json();
   return order;
-}
+};
 
 const validateForm = () => {
-  if (firstName.value.length < 2) {
-    firstNameErrorMsg.innerText = "Le prénom doit contenir au moins 2 caractères";
+  if (!firstName.value.match(/^[a-zA-Z]{2,}$/)) {
+    firstNameErrorMsg.innerText =
+      "Le prénom doit contenir au moins 2 caractères et ne contenir que des lettres";
     return false;
   } else {
     firstNameErrorMsg.innerText = "";
   }
-  if (lastName.value.length < 2) {
-    lastNameErrorMsg.innerText = "Le nom doit contenir au moins 2 caractères";
+  if (!lastName.value.match(/^[a-zA-Z]{2,}$/)) {
+    lastNameErrorMsg.innerText =
+      "Le nom doit contenir au moins 2 caractères et ne contenir que des lettres";
     return false;
   } else {
     lastNameErrorMsg.innerText = "";
   }
   if (!address.value.match(/^[a-zA-Z0-9\s,.'-]{10,}$/)) {
-    addressErrorMsg.innerText = "L'adresse doit contenir au moins 10 caractères";
+    addressErrorMsg.innerText =
+      "L'adresse doit contenir au moins 10 caractères";
     return false;
-
   } else {
     addressErrorMsg.innerText = "";
   }
-  if (city.value.length < 2) {
-    cityErrorMsg.innerText = "La ville doit contenir au moins 2 caractères";
+  if (!city.value.match(/^[a-zA-Zéèçàâêîôûïüëÿ-]{2,}$/)) {
+    cityErrorMsg.innerText =
+      "La ville doit contenir au moins 2 caractères et ne contenir que des lettres";
     return false;
   } else {
     cityErrorMsg.innerText = "";
