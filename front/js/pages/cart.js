@@ -1,9 +1,8 @@
-import { getCart, removeProductFromCart } from "../store/cart.js";
 import {
-  setLocalStore,
   removeFromLocalStore,
-  getLocalStore,
   initLocalStore,
+  getLocalStore,
+  updateQuantity,
 } from "../store/localStore.js";
 
 const cartItemContainer = document.getElementById("cart__items");
@@ -11,17 +10,29 @@ const cartItemContainer = document.getElementById("cart__items");
 window.onload = async () => {
   initLocalStore().then(store => {
     displayItems(store);
+    setTotal(store);
   });
 };
 
 const deleteItemHandler = event => {
   event.preventDefault();
   const itemId = event.target.closest("article").getAttribute("data-id");
-  removeProductFromCart(itemId);
-  removeFromLocalStore(itemId);
+  const updatedStore = removeFromLocalStore(itemId);
   const cartItem = document.querySelector(`[data-id="${itemId}"]`);
   cartItem.remove();
-  setTotal(localStore);
+  setTotal(updatedStore);
+};
+
+const updateQuantityHandler = event => {
+  event.preventDefault();
+  const itemId = event.target.closest("article").getAttribute("data-id");
+  const quantity = event.target.value;
+  if (quantity > 0) {
+    const updatedStore = updateQuantity(itemId, quantity);
+    setTotal(updatedStore);
+  } else {
+    deleteItemHandler(event);
+  }
 };
 
 const displayItems = items => {
@@ -37,7 +48,6 @@ const displayItems = items => {
 };
 
 const itemLayout = async item => {
-  //create abstract functions to manipulate the DOM with setAttribute and a list for each element to create, iterate, then return result
   const { _id, color, quantity, imageUrl, altTxt, price } = item;
 
   const cartItem = document.createElement("article");
@@ -81,6 +91,7 @@ const itemLayout = async item => {
   quantityInput.value = quantity;
   quantityInput.setAttribute("min", 1);
   quantityInput.setAttribute("max", 100);
+  quantityInput.addEventListener("change", updateQuantityHandler);
 
   const cartItemContentSettingsDelete = document.createElement("div");
   cartItemContentSettingsDelete.className =
@@ -112,7 +123,6 @@ const itemLayout = async item => {
 };
 
 const setTotal = cartItems => {
-  console.log(cartItems);
   let totalPrice = 0;
   let totalQty = 0;
 
