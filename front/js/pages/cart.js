@@ -9,6 +9,7 @@ const initStore = async () => {
   const cart = getCart();
   const localStore = await setLocalStore(cart);
   displayItems(localStore);
+  localStore.forEach(item => console.log(item))
 
 }
 initStore();

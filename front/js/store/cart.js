@@ -35,7 +35,7 @@ export const resetCart = async () => setCart([]);
  * @returns {CartItem}
  */
 export const addProductToCart = productDto => {
-  const { _id, color, quantity, name } = productDto;
+  const { _id, color, quantity } = productDto;
   const cart = getCart();
 
   //Verify if the item is already in the cart : if so, and the product is the same colour, simply adjust the quantity
