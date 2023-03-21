@@ -1,25 +1,22 @@
 import { getCart, removeProductFromCart } from "../store/cart.js";
-import { setLocalStore, removeFromLocalStore, getLocalStore } from "../store/localStore.js";
+import {
+  setLocalStore,
+  removeFromLocalStore,
+  getLocalStore,
+  initLocalStore,
+} from "../store/localStore.js";
 
 const cartItemContainer = document.getElementById("cart__items");
 
-const initStore = async () => {
-  const cart = getCart();
-  const localStore = await setLocalStore(cart).then(store => {
-
-
-
-  });
-  displayItems(localStore);
-  setTotal(localStore);
-}
 window.onload = async () => {
-  initStore();
-}
+  initLocalStore().then(store => {
+    displayItems(store);
+  });
+};
 
 const deleteItemHandler = event => {
   event.preventDefault();
-  const itemId = event.target.closest('article').getAttribute("data-id")
+  const itemId = event.target.closest("article").getAttribute("data-id");
   removeProductFromCart(itemId);
   removeFromLocalStore(itemId);
   const cartItem = document.querySelector(`[data-id="${itemId}"]`);
@@ -32,14 +29,12 @@ const displayItems = items => {
     items.forEach(item => {
       itemLayout(item);
     });
-  }
-  else {
+  } else {
     const emptyCart = document.createElement("p");
     emptyCart.innerText = "Votre panier est vide";
     cartItemContainer.appendChild(emptyCart);
   }
-}
-
+};
 
 const itemLayout = async item => {
   //create abstract functions to manipulate the DOM with setAttribute and a list for each element to create, iterate, then return result
@@ -114,18 +109,17 @@ const itemLayout = async item => {
 
   cartItemContentSettings.appendChild(cartItemContentSettingsDelete);
   cartItemContentSettingsDelete.appendChild(deleteItem);
-
 };
 
-const setTotal = (cartItems) => {
-  console.log(cartItems)
+const setTotal = cartItems => {
+  console.log(cartItems);
   let totalPrice = 0;
   let totalQty = 0;
 
   cartItems.forEach(item => {
     totalPrice += item.price * item.quantity;
     totalQty += item.quantity;
-  })
+  });
 
   const priceElement = document.getElementById("totalPrice");
   const qtyElement = document.getElementById("totalQuantity");
