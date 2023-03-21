@@ -27,7 +27,6 @@ export const resetCart = async () => setCart([]);
  * @property {String} product._id
  * @property {String} product.color
  * @property {Number} product.quantity
- * @property {String} product.name
  */
 
 /**
