@@ -25,10 +25,14 @@ window.onload = async () => {
         .then(order => {
             if (order.orderId !== undefined) {
                 const spanOrderId = document.querySelector('#orderId');
+                spanOrderId.innerText = order.orderId;
             }
+            console.error(order)
         })
         .catch(error => {
             console.log(error);
+            const confirmationMessage = document.querySelector('.confirmation');
+            confirmationMessage.innerText = "Une erreur est survenue lors de la validation de votre commande. Veuillez réessayer ultérieurement.";
         })
 }
 
