@@ -71,7 +71,6 @@ const formListener = () => {
 
 }
 const validateForm = () => {
-
   if (firstName.value.length < 2) {
     firstNameErrorMsg.innerText = "Le prénom doit contenir au moins 2 caractères";
     return false;
