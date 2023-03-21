@@ -1,49 +1,8 @@
-import { getCart } from "../store/cart.js";
-import { getLocalStore, initLocalStore } from "../store/localStore.js";
-
-const initContact = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    return {
-        firstName: urlParams.get("firstName"),
-        lastName: urlParams.get("lastName"),
-        address: urlParams.get("address"),
-        city: urlParams.get("city"),
-        email: urlParams.get("email")
-    }
-}
-
 window.onload = async () => {
-    const contact = initContact();
-    const products = new Array();
-    const cartItems = getCart();
-    cartItems.forEach(item => {
-        products.push(item._id);
-    });
-    const data = { contact, products }
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get('orderId');
 
-    sendDataToServer(data)
-        .then(order => {
-            if (order.orderId !== undefined) {
-                const spanOrderId = document.querySelector('#orderId');
-                spanOrderId.innerText = order.orderId;
-            }
-            console.error(order)
-        })
-        .catch(error => {
-            console.log(error);
-            const confirmationMessage = document.querySelector('.confirmation');
-            confirmationMessage.innerText = "Une erreur est survenue lors de la validation de votre commande. Veuillez réessayer ultérieurement.";
-        })
-}
+    const spanOrderId = document.querySelector('#orderId');
+    spanOrderId.innerText = orderId;
 
-const sendDataToServer = async (data) => {
-    const response = await fetch("http://localhost:3000/api/products/order", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    });
-    const order = await response.json();
-    return order;
 }
