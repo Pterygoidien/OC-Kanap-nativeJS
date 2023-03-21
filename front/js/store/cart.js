@@ -14,7 +14,8 @@ export const setCart = async (cart = initialCart) =>
  * @returns {Cart}
  */
 
-export const getCart = () => JSON.parse(localStorage.getItem("cart") || "[]");
+export const getCart = async () =>
+  JSON.parse(localStorage.getItem("cart") || "[]");
 
 /**
  * @returns {void}
@@ -33,9 +34,9 @@ export const resetCart = async () => setCart([]);
  * @param {CartItem} productDto
  * @returns {CartItem}
  */
-export const addProductToCart = async productDto => {
+export const addProductToCart = productDto => {
   const { _id, color, quantity, name } = productDto;
-  const cart = await getCart();
+  const cart = getCart();
 
   //Verify if the item is already in the cart : if so, and the product is the same colour, simply adjust the quantity
   const productCartIndex = cart.findIndex(
@@ -62,5 +63,6 @@ export const removeProductFromCart = productId => {
   if (productIndexInCart > -1) cart.splice(i, 1);
   //else throw new Error
   setCart(cart);
+  console("removeProductFromCart called");
   return cart;
 };
