@@ -55,7 +55,11 @@ const onSubmit = () => {
 
   productState = { ...productState, quantity, color };
 
-  if (quantity > 0 && color.trim().length > 0) addProductToCart(productState);
+  if (quantity > 0 && color.trim().length > 0) {
+    addProductToCart(productState);
+    console.log("coucou");
+    window.location.href = "./";
+  }
 };
 
 /*const generateProduct = async product => {
