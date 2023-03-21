@@ -8,6 +8,7 @@ import {
 import { itemLayout } from "../utils/itemLayout.js";
 
 const cartItemContainer = document.getElementById("cart__items");
+const form = document.querySelector(".cart__order__form");
 
 window.onload = async () => {
   initLocalStore().then(store => {
@@ -24,9 +25,8 @@ const displayItems = items => {
       itemLayout(item, cartItemContainer, { deleteItemHandler, updateQuantityHandler });
     });
   } else {
-    const emptyCart = document.createElement("p");
-    emptyCart.innerText = "Votre panier est vide";
-    cartItemContainer.appendChild(emptyCart);
+    emptyCartDisplay();
+
   }
 };
 
@@ -37,6 +37,9 @@ const deleteItemHandler = event => {
   const cartItem = document.querySelector(`[data-id="${itemId}"]`);
   cartItem.remove();
   setTotal(updatedStore);
+  if (updatedStore.length === 0) {
+    emptyCartDisplay();
+  }
 };
 
 const updateQuantityHandler = event => {
@@ -51,8 +54,16 @@ const updateQuantityHandler = event => {
   }
 };
 
+const emptyCartDisplay = () => {
+  const emptyCart = document.createElement("h2");
+  emptyCart.setAttribute('text-align', 'center');
+  emptyCart.innerText = "Votre panier est vide";
+  cartItemContainer.appendChild(emptyCart);
+  form.setAttribute('style', 'display: none');
+}
+
 const formListener = () => {
-  const form = document.querySelector(".cart__order__form");
+
   const firstName = document.getElementById("firstName");
   const lastName = document.getElementById("lastName");
   const address = document.getElementById("address");
