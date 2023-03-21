@@ -85,8 +85,34 @@ const sendFormHandler = event => {
     city: city.value,
     email: email.value
   }
-  console.log(contact)
+  const products = new Array();
+  const cartItems = getLocalStore();
+  cartItems.forEach(item => {
+    products.push(item._id);
+  });
+  const data = { contact, products }
+  sendDataToServer(data)
+    .then(order => {
+      if (order.orderId !== undefined) {
+        window.location.replace('./confirmation.html?orderId=' + order.orderId);
+      }
+
+    })
+
+
 }
+const sendDataToServer = async (data) => {
+  const response = await fetch("http://localhost:3000/api/products/order", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  });
+  const order = await response.json();
+  return order;
+}
+
 const validateForm = () => {
   if (firstName.value.length < 2) {
     firstNameErrorMsg.innerText = "Le prénom doit contenir au moins 2 caractères";
